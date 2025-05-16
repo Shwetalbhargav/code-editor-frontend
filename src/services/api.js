@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://code-editor-backend-pync.onrender.com";
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "https://code-editor-backend-pync.onrender.com";
+
 
 // POST: Run code
 export const runCode = async ({ language, code, stdin }) => {
