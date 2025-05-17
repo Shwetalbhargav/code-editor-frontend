@@ -4,8 +4,11 @@ import React, { useState } from "react";
 import Editor from "../components/Editor";
 import OutputPane from "../components/OutputPane";
 import HintPane from "../components/HintPane";
-import VideoUpload from "../components/VideoUpload";
+
 import { runCode, saveCode, getHint } from "../services/api";
+useEffect(() => {
+  console.log("Output:", output);
+}, [output]);
 
 const Home = () => {
   const [language, setLanguage] = useState("python");
@@ -55,7 +58,7 @@ const Home = () => {
         />
       </div>
       <div className="flex flex-col gap-4">
-        <VideoUpload />
+    
         <HintPane hint={hint} />
         <OutputPane output={output} />
       </div>
