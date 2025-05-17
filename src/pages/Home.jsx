@@ -1,10 +1,9 @@
 // src/pages/Home.jsx
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Editor from "../components/Editor";
 import OutputPane from "../components/OutputPane";
 import HintPane from "../components/HintPane";
-
 import { runCode, saveCode, getHint } from "../services/api";
 
 const Home = () => {
@@ -13,10 +12,10 @@ const Home = () => {
   const [output, setOutput] = useState("");
   const [hint, setHint] = useState("");
 
+  // ✅ useEffect must be inside the component
   useEffect(() => {
     console.log("Output:", output);
   }, [output]);
-  
 
   const handleRun = async ({ language, code, stdin }) => {
     try {
@@ -26,7 +25,7 @@ const Home = () => {
       setOutput("Error: " + err.message);
     }
   };
-  
+
   const handleSave = async ({ language, code, stdin }) => {
     try {
       const id = await saveCode({ language, code, stdin });
@@ -35,7 +34,6 @@ const Home = () => {
       alert("Error saving code");
     }
   };
-  
 
   const handleHint = async () => {
     try {
@@ -60,7 +58,6 @@ const Home = () => {
         />
       </div>
       <div className="flex flex-col gap-4">
-    
         <HintPane hint={hint} />
         <OutputPane output={output} />
       </div>
