@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import Editor from "./Editor";
 import HintPane from "./HintPane";
 import { runCode, saveCode, getHint } from "../services/api";
 import { FaSpinner } from "react-icons/fa";
+import { Editor } from "@monaco-editor/react";
 
 const LiveEditorWithHint = () => {
   const [language, setLanguage] = useState("python");
@@ -130,4 +130,4 @@ const LiveEditorWithHint = () => {
   );
 };
 
-export default LiveEditorWithHint;
+export default Editor;
