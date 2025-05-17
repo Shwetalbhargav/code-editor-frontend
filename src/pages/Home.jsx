@@ -6,15 +6,17 @@ import OutputPane from "../components/OutputPane";
 import HintPane from "../components/HintPane";
 
 import { runCode, saveCode, getHint } from "../services/api";
-useEffect(() => {
-  console.log("Output:", output);
-}, [output]);
 
 const Home = () => {
   const [language, setLanguage] = useState("python");
   const [code, setCode] = useState("");
   const [output, setOutput] = useState("");
   const [hint, setHint] = useState("");
+
+  useEffect(() => {
+    console.log("Output:", output);
+  }, [output]);
+  
 
   const handleRun = async ({ language, code, stdin }) => {
     try {
