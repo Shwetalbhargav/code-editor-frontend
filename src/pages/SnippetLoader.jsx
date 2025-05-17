@@ -35,9 +35,22 @@ const SnippetLoader = () => {
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-2">Snippet ID: {id}</h2>
       <p className="mb-1 text-sm text-gray-600">Language: <strong>{codeData.language}</strong></p>
-      <pre className="bg-gray-900 text-green-400 p-4 rounded whitespace-pre-wrap">
-        {codeData.code}
-      </pre>
+      
+      <div className="mb-4">
+        <h3 className="text-md font-semibold text-white mb-1">Code:</h3>
+        <pre className="bg-gray-900 text-green-400 p-4 rounded whitespace-pre-wrap">
+          {codeData.code}
+        </pre>
+      </div>
+
+      {codeData.stdin && (
+        <div>
+          <h3 className="text-md font-semibold text-white mb-1">Input (stdin):</h3>
+          <pre className="bg-gray-800 text-blue-300 p-3 rounded whitespace-pre-wrap">
+            {codeData.stdin}
+          </pre>
+        </div>
+      )}
     </div>
   );
 };

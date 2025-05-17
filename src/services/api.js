@@ -14,10 +14,11 @@ export const runCode = async ({ language, code, stdin }) => {
 };
 
 // POST: Save code snippet
-export const saveCode = async ({ language, code }) => {
+export const saveCode = async ({ language, code, stdin  }) => {
   const res = await axios.post(`${API_BASE_URL}/save`, {
     language,
-    code
+    code,
+    stdin: stdin || ""
   });
   return res.data.code_id;
 };
