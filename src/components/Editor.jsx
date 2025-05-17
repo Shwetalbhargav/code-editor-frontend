@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import HintPane from "./HintPane";
 import { runCode, saveCode, getHint } from "../services/api";
 import { FaSpinner } from "react-icons/fa";
-import { Editor } from "@monaco-editor/react";
+import { Editor as MonacoEditor } from "@monaco-editor/react";
 
-const LiveEditorWithHint = () => {
+const Editor = () => {
   const [language, setLanguage] = useState("python");
   const [code, setCode] = useState("");
   const [hint, setHint] = useState("");
