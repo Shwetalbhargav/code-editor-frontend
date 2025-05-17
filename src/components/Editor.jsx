@@ -1,36 +1,29 @@
 import React, { useState } from "react";
 import { FaPlay, FaSave, FaMagic } from "react-icons/fa";
-import { runCode, saveCode } from "../services/api";
-import OutputPane from "./OutputPane";
 import DOMPurify from "dompurify";
-import { useNavigate } from "react-router-dom";
 
-const Editor = () => {
-  const [language, setLanguage] = useState("python");
-  const [code, setCode] = useState("");
+const Editor = ({
+  language,
+  setLanguage,
+  code,
+  setCode,
+  onRun,
+  onSave,
+  onHint,
+}) => {
   const [stdin, setStdin] = useState("");
-  const [output, setOutput] = useState("");
-  const navigate = useNavigate();
-  const code_id = await saveCode({ language, code, stdin });
 
-
-  const handleRun = async () => {
-    if (language === "html") return; // HTML is rendered locally
-    try {
-      const result = await runCode({ language, code, stdin });
-      setOutput(result);
-    } catch (err) {
-      setOutput("Error executing code.");
-    }
+  const handleRunClick = () => {
+    if (language === "html") return;
+    onRun({ language, code, stdin });
   };
 
-  const handleSave = async () => {
-    try {
-      const code_id = await saveCode({ language, code });
-      navigate(`/snippets/${code_id}`);
-    } catch (err) {
-      alert("Failed to save code.");
-    }
+  const handleSaveClick = () => {
+    onSave({ language, code, stdin });
+  };
+
+  const handleHintClick = () => {
+    onHint({ language, code });
   };
 
   return (
@@ -46,13 +39,22 @@ const Editor = () => {
           <option value="html">HTML</option>
         </select>
         <div className="flex gap-2">
-          <button onClick={handleRun} className="bg-green-500 text-white px-3 py-1 rounded flex items-center gap-1">
+          <button
+            onClick={handleRunClick}
+            className="bg-green-500 text-white px-3 py-1 rounded flex items-center gap-1"
+          >
             <FaPlay /> Run
           </button>
-          <button onClick={handleSave} className="bg-blue-500 text-white px-3 py-1 rounded flex items-center gap-1">
+          <button
+            onClick={handleSaveClick}
+            className="bg-blue-500 text-white px-3 py-1 rounded flex items-center gap-1"
+          >
             <FaSave /> Save
           </button>
-          <button className="bg-purple-500 text-white px-3 py-1 rounded flex items-center gap-1">
+          <button
+            onClick={handleHintClick}
+            className="bg-purple-500 text-white px-3 py-1 rounded flex items-center gap-1"
+          >
             <FaMagic /> Hint
           </button>
         </div>
@@ -76,17 +78,15 @@ const Editor = () => {
         />
       )}
 
-      <div className="mt-4">
-        {language === "html" ? (
+      {language === "html" && (
+        <div className="mt-4">
           <iframe
             title="HTML Preview"
             className="w-full h-64 border rounded"
             srcDoc={DOMPurify.sanitize(code)}
           />
-        ) : (
-          <OutputPane output={output} />
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -13,23 +13,24 @@ const Home = () => {
   const [output, setOutput] = useState("");
   const [hint, setHint] = useState("");
 
-  const handleRun = async () => {
+  const handleRun = async ({ language, code, stdin }) => {
     try {
-      const result = await runCode({ language, code });
+      const result = await runCode({ language, code, stdin });
       setOutput(result);
     } catch (err) {
       setOutput("Error: " + err.message);
     }
   };
-
-  const handleSave = async () => {
+  
+  const handleSave = async ({ language, code, stdin }) => {
     try {
-      const id = await saveCode({ language, code });
+      const id = await saveCode({ language, code, stdin });
       alert(`Code saved! ID: ${id}`);
     } catch (err) {
       alert("Error saving code");
     }
   };
+  
 
   const handleHint = async () => {
     try {
