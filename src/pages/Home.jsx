@@ -7,6 +7,8 @@ import OutputPane from "../components/OutputPane";
 import HintPane from "../components/HintPane";
 import { runCode, saveCode, getHint } from "../services/api";
 
+
+
 const Home = () => {
   const [language, setLanguage] = useState("python");
   const [code, setCode] = useState("");
@@ -14,6 +16,11 @@ const Home = () => {
   const [output, setOutput] = useState("");
   const [hint, setHint] = useState("");
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    setHint("");
+  }, [code]);
+
 
   const handleRunClick = async () => {
     try {
@@ -115,7 +122,9 @@ const Home = () => {
             {error}
           </div>
         )}
-        <HintPane hint={hint} />
+        {hint && (
+          <HintPane hint={hint} onRemove={() => setHint("")} />
+        )}
         <OutputPane output={output} />
       </div>
     </main>
