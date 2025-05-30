@@ -10,7 +10,7 @@ export const runCode = async ({ language, code, stdin }) => {
     code,
     stdin: stdin || ""
   });
-  return res.data.output;
+  return res.data;
 };
 
 // POST: Save code snippet

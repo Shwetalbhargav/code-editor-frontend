@@ -1,33 +1,33 @@
-// src/pages/Home.jsx
-
 import React, { useState, useEffect } from "react";
 import DOMPurify from "dompurify";
 import { FaPlay, FaSave, FaMagic } from "react-icons/fa";
 import OutputPane from "../components/OutputPane";
 import HintPane from "../components/HintPane";
 import { runCode, saveCode, getHint } from "../services/api";
-
-
+import { Rnd } from "react-rnd";
 
 const Home = () => {
   const [language, setLanguage] = useState("python");
   const [code, setCode] = useState("");
   const [stdin, setStdin] = useState("");
-  const [output, setOutput] = useState("");
+  const [output, setOutput] = useState(null); // ✅ fixed from ""
   const [hint, setHint] = useState("");
   const [error, setError] = useState("");
+  const [history, setHistory] = useState([]);
 
   useEffect(() => {
     setHint("");
   }, [code]);
 
-
   const handleRunClick = async () => {
     try {
       const result = await runCode({ language, code, stdin });
       setOutput(result);
+      setHistory((prev) => [...prev, { code, stdin, output: result }]);
     } catch (err) {
-      setOutput("Error: " + err.message);
+      const errorResult = { output: "Error: " + err.message, outputType: "text" };
+      setOutput(errorResult);
+      setHistory((prev) => [...prev, { code, stdin, output: errorResult }]);
     }
   };
 
@@ -117,15 +117,34 @@ const Home = () => {
       </div>
 
       <div className="flex flex-col gap-4">
+        <button
+          onClick={() => { setOutput(null); setHistory([]); }}
+          className="bg-gray-300 text-black px-3 py-1 rounded hover:bg-gray-400"
+        >
+          Clear Output
+        </button>
+
         {error && (
           <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-2 rounded shadow">
             {error}
           </div>
         )}
+
         {hint && (
-          <HintPane hint={hint} onRemove={() => setHint("")} />
+          <Rnd default={{ x: 100, y: 100, width: 300, height: 200 }} bounds="window">
+            <HintPane hint={hint} onRemove={() => setHint("")} />
+          </Rnd>
         )}
-        <OutputPane output={output} />
+
+        {output && <OutputPane output={output} />}
+
+        {history.map((entry, idx) => (
+          <div key={idx} className="bg-gray-800 text-white p-2 mb-2 rounded font-mono text-sm">
+            <div className="text-yellow-300"> {entry.code.trim()}</div>
+            {entry.stdin && <div className="text-blue-300">{entry.stdin.trim()}</div>}
+            <OutputPane output={entry.output} />
+          </div>
+        ))}
       </div>
     </main>
   );
